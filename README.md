@@ -7,7 +7,7 @@ Desafio do curso FullCycle, no módulo de DevOps, trabalhando com docker.
 O retorno da aplicação node.js para o nginx deverá ser:
 
 <h1>Full Cycle Rocks!</h1>
-<ul>
+<ul>Lista de nomes cadastrado no banco de dados
 <li>Nome1 </li>
 <li>Nome2</li>
 </ul>
