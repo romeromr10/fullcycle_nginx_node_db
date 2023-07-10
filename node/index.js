@@ -9,16 +9,16 @@ const config = {
   password: 'lascado',
   database: 'nodedb',
 }
-
+// accessa o banco de dados
 const mysql = require('mysql')
 
 const connection = mysql.createConnection(config)
 
 app.get('/', (req, res) => {
   const name = faker.name.findName()
-
+// insere um registro com nome fake
   connection.query(`INSERT INTO people (nome) VALUES ('${name}')`)
-
+// faz um select e mostra no html.
   connection.query(`SELECT nome FROM people`, (error, results, fields) => {
     res.send(`
       <h1>Full Cycle Rocks!</h1>
