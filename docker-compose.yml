@@ -1,9 +1,9 @@
-version: '3.7'
+version: '3.3'
 
 services:
   nginx:
     build:
-      context: ./nginx
+      context: nginx
     container_name: nginx
     restart: always
     ports:
@@ -16,10 +16,10 @@ services:
 
   node:
     container_name: node
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh node index.js
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 50s docker-entrypoint.sh
     restart: always
     build:
-      context: ./node
+      context: node
     depends_on:
       - db
     tty: true
@@ -31,7 +31,7 @@ services:
       - ./node:/usr/src/app
   db:
     build:
-      context: ./mysql
+      context: mysql
     command: --innodb-use-native-aio=0 --skip-grant-tables
     container_name: db
     restart: always
