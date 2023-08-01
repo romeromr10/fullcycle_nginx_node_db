@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 
 services:
   nginx:
@@ -7,44 +7,41 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - '8080:80'
+      - '9090:80'
     depends_on:
-      - node
+      - app
     networks:
-      - node_nginx-network
+      - desafio2-network
 
-
-  node:
-    container_name: node
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 50s docker-entrypoint.sh
-    restart: always
+  app:
     build:
       context: node
+    container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 50s docker-entrypoint.sh node index.js
+    restart: always
     depends_on:
       - db
     tty: true
     ports:
       - "3000:3000"
     networks:
-      - node_nginx-network
+      - desafio2-network
     volumes:
       - ./node:/usr/src/app
   db:
-    build:
-      context: mysql
+    image: mysql:5.7
     command: --innodb-use-native-aio=0 --skip-grant-tables
     container_name: db
     restart: always
     tty: true
     networks:
-      - node_nginx-network
+      - desafio2-network
     volumes:
-      - ./mysql/volume:/var/lib/mysql
-
+      - ./mysql:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=lascado
 
 networks:
-  node_nginx-network:
+  desafio2-network:
     driver: bridge
